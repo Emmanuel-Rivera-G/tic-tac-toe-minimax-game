@@ -30,7 +30,7 @@ Este es un proyecto avanzado en Python que implementa el juego de Tres en Raya (
 
 1. Clona el repositorio:
    ```bash
-   git clone <tu-repositorio>
+   git clone https://github.com/Emmanuel-Rivera-G/tic-tac-toe-minimax-game.git
    cd mi-proyecto-python
    ```
 
