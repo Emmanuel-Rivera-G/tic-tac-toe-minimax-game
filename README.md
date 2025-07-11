@@ -43,7 +43,7 @@ Este es un proyecto avanzado en Python que implementa el juego de Tres en Raya (
 
 ### Ejecutar el juego principal
 ```bash
-poetry run python src/mi_proyecto_python/tres_en_raya_pygame.py
+poetry run python src/tic-tac-toe-minimax-game/tres_en_raya_pygame.py
 ```
 
 ### Ejecutar la demostración del análisis matemático
@@ -82,7 +82,7 @@ poetry run pytest
 ```
 mi-proyecto-python/
 ├── src/
-│   └── mi_proyecto_python/
+│   └── tic-tac-toe-minimax-game/
 │       ├── __init__.py
 │       ├── minimax.py          # Algoritmo Minimax con poda alfa-beta
 │       ├── tres_en_raya.py     # Lógica del juego (consola)
