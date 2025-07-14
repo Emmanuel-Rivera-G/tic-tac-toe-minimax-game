@@ -13,7 +13,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 import time
 from typing import List, Tuple, Optional
-from minimax import MinimaxAlgorithm
+from .minimax import MinimaxAlgorithm
 
 # Configuración de colores
 BLANCO = (255, 255, 255)

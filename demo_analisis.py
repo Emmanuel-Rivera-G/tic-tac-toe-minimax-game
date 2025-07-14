@@ -6,13 +6,8 @@ Este archivo muestra cómo se comporta el algoritmo con diferentes configuracion
 import matplotlib.pyplot as plt
 import numpy as np
 import time
-import sys
-import os
 
-# Agregar el directorio src al path para importar módulos
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src', 'mi_proyecto_python'))
-
-from tres_en_raya_pygame import TresEnRayaPygame
+from src.tic_tac_toe_minimax_game.tres_en_raya_pygame import TresEnRayaPygame
 
 def ejecutar_demo_analisis():
     """
