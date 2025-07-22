@@ -1,7 +1,3 @@
-"""
-Juego de Tres en Raya (Tic-Tac-Toe) gráfico con pygame usando el algoritmo Minimax.
-"""
-
 import pygame
 import sys
 import copy
