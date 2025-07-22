@@ -7,7 +7,6 @@ import sys
 import copy
 import random
 import time
-from typing import List, Tuple, Optional
 from .minimax import MinimaxAlgorithm
 
 # Configuración de colores
@@ -23,7 +22,7 @@ NARANJA = (255, 165, 0)
 VIOLETA = (128, 0, 128)
 
 class TresEnRayaPygame(MinimaxAlgorithm):
-    def __init__(self, use_alpha_beta: bool = True):
+    def __init__(self, use_alpha_beta=True):
         super().__init__(use_alpha_beta)
         
         # Configuración del juego
@@ -100,7 +99,7 @@ class TresEnRayaPygame(MinimaxAlgorithm):
                 elif self.board[fila][col] == 'O':
                     self.dibujar_o(fila, col)
     
-    def dibujar_x(self, fila: int, col: int):
+    def dibujar_x(self, fila, col):
         """Dibuja una X en la posición especificada."""
         margen = 20
         x = col * self.CELDA_TAMAÑO + margen
@@ -111,7 +110,7 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         pygame.draw.line(self.pantalla, AZUL, (x, y), (x_fin, y_fin), 8)
         pygame.draw.line(self.pantalla, AZUL, (x, y_fin), (x_fin, y), 8)
     
-    def dibujar_o(self, fila: int, col: int):
+    def dibujar_o(self, fila, col):
         """Dibuja una O en la posición especificada."""
         centro_x = col * self.CELDA_TAMAÑO + self.CELDA_TAMAÑO // 2
         centro_y = fila * self.CELDA_TAMAÑO + self.CELDA_TAMAÑO // 2
@@ -175,7 +174,7 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         instrucciones_rect = instrucciones.get_rect(center=(self.VENTANA_TAMAÑO//2, self.VENTANA_TAMAÑO + 50))
         self.pantalla.blit(instrucciones, instrucciones_rect)
     
-    def obtener_click_dificultad(self, pos_mouse: Tuple[int, int]) -> Optional[str]:
+    def obtener_click_dificultad(self, pos_mouse):
         x, y = pos_mouse
         
         y_start = 200
@@ -261,7 +260,7 @@ class TresEnRayaPygame(MinimaxAlgorithm):
             last_time = self.analysis_data['time_taken'][-1] * 1000  # convertir a ms
             self.mostrar_costo_jugada(last_nodes, last_time)
     
-    def obtener_posicion_clic(self, pos_mouse: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+    def obtener_posicion_clic(self, pos_mouse):
         x, y = pos_mouse
         
         # Verificar si el clic está dentro del tablero
@@ -273,17 +272,17 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         
         return (fila, col)
     
-    def es_movimiento_valido(self, fila: int, col: int) -> bool:
+    def es_movimiento_valido(self, fila, col):
         return (0 <= fila < 3 and 0 <= col < 3 and 
                 self.board[fila][col] == ' ')
     
-    def realizar_movimiento(self, fila: int, col: int, jugador: str) -> bool:
+    def realizar_movimiento(self, fila, col, jugador):
         if self.es_movimiento_valido(fila, col):
             self.board[fila][col] = jugador
             return True
         return False
     
-    def verificar_ganador(self, board: List[List[str]]) -> Optional[str]:
+    def verificar_ganador(self, board):
         # Verificar filas
         for fila in board:
             if fila[0] == fila[1] == fila[2] != ' ':
@@ -307,10 +306,10 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         return None
     
     # Métodos heredados de MinimaxAlgorithm
-    def is_terminal_state(self, state: List[List[str]]) -> bool:
+    def is_terminal_state(self, state):
         return self.verificar_ganador(state) is not None
     
-    def evaluate_state(self, state: List[List[str]]) -> float:
+    def evaluate_state(self, state):
         winner = self.verificar_ganador(state)
         if winner == self.ai_player:
             return 1.0
@@ -321,7 +320,7 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         else:
             return 0.0
     
-    def get_possible_moves(self, state: List[List[str]]) -> List[Tuple[int, int]]:
+    def get_possible_moves(self, state):
         moves = []
         for i in range(3):
             for j in range(3):
@@ -329,7 +328,7 @@ class TresEnRayaPygame(MinimaxAlgorithm):
                     moves.append((i, j))
         return moves
     
-    def make_move(self, state: List[List[str]], move: Tuple[int, int]) -> List[List[str]]:
+    def make_move(self, state, move):
         new_state = copy.deepcopy(state)
         row, col = move
         
@@ -339,7 +338,7 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         new_state[row][col] = current_player
         return new_state
     
-    def obtener_movimiento_ia(self) -> Tuple[int, int]:
+    def obtener_movimiento_ia(self):
         difficulty_config = self.difficulty_levels[self.current_difficulty]
         
         # Medir tiempo de ejecución
@@ -399,7 +398,7 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         self.reiniciar_juego()
         self.showing_difficulty_menu = True
     
-    def mostrar_costo_jugada(self, nodos_evaluados: int, tiempo_ms: float):
+    def mostrar_costo_jugada(self, nodos_evaluados, tiempo_ms):
         """Muestra el costo de la jugada actual en la interfaz."""
         if nodos_evaluados > 0:
             # Área para mostrar el costo

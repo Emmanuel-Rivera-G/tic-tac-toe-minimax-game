@@ -1,9 +1,8 @@
 import copy
-from typing import List, Tuple, Optional
 from .minimax import MinimaxAlgorithm
 
 class TresEnRaya(MinimaxAlgorithm):
-    def __init__(self, use_alpha_beta: bool = True):
+    def __init__(self, use_alpha_beta=True):
         super().__init__(use_alpha_beta)
         self.board = [[' ' for _ in range(3)] for _ in range(3)]
         self.human_player = 'X'
@@ -17,17 +16,17 @@ class TresEnRaya(MinimaxAlgorithm):
             if i < 2:
                 print("  -----------")
     
-    def is_valid_move(self, row: int, col: int) -> bool:
+    def is_valid_move(self, row, col):
         return (0 <= row < 3 and 0 <= col < 3 and 
                 self.board[row][col] == ' ')
     
-    def make_move_on_board(self, row: int, col: int, player: str) -> bool:
+    def make_move_on_board(self, row, col, player):
         if self.is_valid_move(row, col):
             self.board[row][col] = player
             return True
         return False
     
-    def check_winner(self, board: List[List[str]]) -> Optional[str]:
+    def check_winner(self, board):
         for row in board:
             if row[0] == row[1] == row[2] != ' ':
                 return row[0]
@@ -46,10 +45,10 @@ class TresEnRaya(MinimaxAlgorithm):
         
         return None
     
-    def is_terminal_state(self, state: List[List[str]]) -> bool:
+    def is_terminal_state(self, state):
         return self.check_winner(state) is not None
     
-    def evaluate_state(self, state: List[List[str]]) -> float:
+    def evaluate_state(self, state):
         winner = self.check_winner(state)
         if winner == self.ai_player:
             return 1.0
@@ -60,7 +59,7 @@ class TresEnRaya(MinimaxAlgorithm):
         else:
             return 0.0
     
-    def get_possible_moves(self, state: List[List[str]]) -> List[Tuple[int, int]]:
+    def get_possible_moves(self, state):
         moves = []
         for i in range(3):
             for j in range(3):
@@ -68,7 +67,7 @@ class TresEnRaya(MinimaxAlgorithm):
                     moves.append((i, j))
         return moves
     
-    def make_move(self, state: List[List[str]], move: Tuple[int, int]) -> List[List[str]]:
+    def make_move(self, state, move):
         new_state = copy.deepcopy(state)
         row, col = move
         
@@ -78,11 +77,11 @@ class TresEnRaya(MinimaxAlgorithm):
         new_state[row][col] = current_player
         return new_state
     
-    def get_ai_move(self) -> Tuple[int, int]:
+    def get_ai_move(self):
         best_move = self.get_best_move(self.board, depth=9, maximizing_player=True)
         return best_move
     
-    def get_human_move(self) -> Tuple[int, int]:
+    def get_human_move(self):
         while True:
             try:
                 row = int(input("Ingresa la fila (0-2): "))

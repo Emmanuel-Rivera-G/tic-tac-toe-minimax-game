@@ -1,13 +1,12 @@
 import math
-from typing import List, Tuple, Any, Optional
 
 class MinimaxAlgorithm:
-    def __init__(self, use_alpha_beta: bool = True):
+    def __init__(self, use_alpha_beta=True):
         self.use_alpha_beta = use_alpha_beta
         self.nodes_evaluated = 0
     
-    def minimax(self, state: Any, depth: int, maximizing_player: bool, 
-                alpha: float = -math.inf, beta: float = math.inf) -> Tuple[float, Optional[Any]]:
+    def minimax(self, state, depth, maximizing_player, 
+                alpha=-math.inf, beta=math.inf):
         self.nodes_evaluated += 1
         
         if depth == 0 or self.is_terminal_state(state):
@@ -49,27 +48,27 @@ class MinimaxAlgorithm:
             
             return min_eval, best_move
     
-    def get_best_move(self, state: Any, depth: int = 6, maximizing_player: bool = True) -> Any:
+    def get_best_move(self, state, depth=6, maximizing_player=True):
         self.nodes_evaluated = 0
         _, best_move = self.minimax(state, depth, maximizing_player)
         return best_move
     
-    def get_stats(self) -> dict:
+    def get_stats(self):
         return {
             "nodes_evaluated": self.nodes_evaluated,
             "alpha_beta_enabled": self.use_alpha_beta
         }
     
-    def is_terminal_state(self, state: Any) -> bool:
+    def is_terminal_state(self, state):
         raise NotImplementedError("Must implement is_terminal_state")
     
-    def evaluate_state(self, state: Any) -> float:
+    def evaluate_state(self, state):
         raise NotImplementedError("Must implement evaluate_state")
     
-    def get_possible_moves(self, state: Any) -> List[Any]:
+    def get_possible_moves(self, state):
         raise NotImplementedError("Must implement get_possible_moves")
     
-    def make_move(self, state: Any, move: Any) -> Any:
+    def make_move(self, state, move):
         raise NotImplementedError("Must implement make_move")
 
 class TicTacToe:
