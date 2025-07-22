@@ -33,6 +33,7 @@ packages = [{include = "tic_tac_toe_minimax_game", from = "src"}]
 
 [tool.poetry.scripts]
 dev = "tic_tac_toe_minimax_game.tres_en_raya_pygame:main"
+console = "tic_tac_toe_minimax_game.tres_en_raya:main"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"

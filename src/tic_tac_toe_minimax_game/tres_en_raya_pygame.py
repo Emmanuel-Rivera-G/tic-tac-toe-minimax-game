@@ -5,12 +5,7 @@ Juego de Tres en Raya (Tic-Tac-Toe) gráfico con pygame usando el algoritmo Mini
 import pygame
 import sys
 import copy
-import math
 import random
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-import numpy as np
 import time
 from typing import List, Tuple, Optional
 from .minimax import MinimaxAlgorithm
@@ -28,17 +23,7 @@ NARANJA = (255, 165, 0)
 VIOLETA = (128, 0, 128)
 
 class TresEnRayaPygame(MinimaxAlgorithm):
-    """
-    Implementación gráfica del juego Tres en Raya usando pygame y Minimax.
-    """
-    
     def __init__(self, use_alpha_beta: bool = True):
-        """
-        Inicializa el juego de Tres en Raya gráfico.
-        
-        Args:
-            use_alpha_beta (bool): Si usar poda alfa-beta
-        """
         super().__init__(use_alpha_beta)
         
         # Configuración del juego
@@ -191,15 +176,6 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         self.pantalla.blit(instrucciones, instrucciones_rect)
     
     def obtener_click_dificultad(self, pos_mouse: Tuple[int, int]) -> Optional[str]:
-        """
-        Verifica si se hizo clic en algún botón de dificultad.
-        
-        Args:
-            pos_mouse: Posición del mouse (x, y)
-            
-        Returns:
-            Nombre de la dificultad seleccionada o None
-        """
         x, y = pos_mouse
         
         y_start = 200
@@ -284,20 +260,8 @@ class TresEnRayaPygame(MinimaxAlgorithm):
             last_nodes = self.analysis_data['nodes_evaluated'][-1]
             last_time = self.analysis_data['time_taken'][-1] * 1000  # convertir a ms
             self.mostrar_costo_jugada(last_nodes, last_time)
-        
-        # Dibujar botón de análisis matemático
-        self.dibujar_boton_analisis()
     
     def obtener_posicion_clic(self, pos_mouse: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        """
-        Convierte la posición del mouse en coordenadas del tablero.
-        
-        Args:
-            pos_mouse: Posición del mouse (x, y)
-            
-        Returns:
-            Tupla con (fila, columna) o None si está fuera del tablero
-        """
         x, y = pos_mouse
         
         # Verificar si el clic está dentro del tablero
@@ -310,46 +274,16 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         return (fila, col)
     
     def es_movimiento_valido(self, fila: int, col: int) -> bool:
-        """
-        Verifica si un movimiento es válido.
-        
-        Args:
-            fila: Fila del movimiento
-            col: Columna del movimiento
-            
-        Returns:
-            True si el movimiento es válido
-        """
         return (0 <= fila < 3 and 0 <= col < 3 and 
                 self.board[fila][col] == ' ')
     
     def realizar_movimiento(self, fila: int, col: int, jugador: str) -> bool:
-        """
-        Realiza un movimiento en el tablero.
-        
-        Args:
-            fila: Fila del movimiento
-            col: Columna del movimiento
-            jugador: Jugador que realiza el movimiento
-            
-        Returns:
-            True si el movimiento fue exitoso
-        """
         if self.es_movimiento_valido(fila, col):
             self.board[fila][col] = jugador
             return True
         return False
     
     def verificar_ganador(self, board: List[List[str]]) -> Optional[str]:
-        """
-        Verifica si hay un ganador en el tablero.
-        
-        Args:
-            board: Estado del tablero
-            
-        Returns:
-            'X', 'O' si hay ganador, 'T' si hay empate, None si el juego continúa
-        """
         # Verificar filas
         for fila in board:
             if fila[0] == fila[1] == fila[2] != ' ':
@@ -374,11 +308,9 @@ class TresEnRayaPygame(MinimaxAlgorithm):
     
     # Métodos heredados de MinimaxAlgorithm
     def is_terminal_state(self, state: List[List[str]]) -> bool:
-        """Implementa el método abstracto de MinimaxAlgorithm."""
         return self.verificar_ganador(state) is not None
     
     def evaluate_state(self, state: List[List[str]]) -> float:
-        """Implementa el método abstracto de MinimaxAlgorithm."""
         winner = self.verificar_ganador(state)
         if winner == self.ai_player:
             return 1.0
@@ -390,7 +322,6 @@ class TresEnRayaPygame(MinimaxAlgorithm):
             return 0.0
     
     def get_possible_moves(self, state: List[List[str]]) -> List[Tuple[int, int]]:
-        """Implementa el método abstracto de MinimaxAlgorithm."""
         moves = []
         for i in range(3):
             for j in range(3):
@@ -399,11 +330,9 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         return moves
     
     def make_move(self, state: List[List[str]], move: Tuple[int, int]) -> List[List[str]]:
-        """Implementa el método abstracto de MinimaxAlgorithm."""
         new_state = copy.deepcopy(state)
         row, col = move
         
-        # Determinar qué jugador hace el movimiento
         moves_count = sum(1 for i in range(3) for j in range(3) if state[i][j] != ' ')
         current_player = self.human_player if moves_count % 2 == 0 else self.ai_player
         
@@ -411,12 +340,6 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         return new_state
     
     def obtener_movimiento_ia(self) -> Tuple[int, int]:
-        """
-        Obtiene el mejor movimiento para la IA según la dificultad.
-        
-        Returns:
-            Tupla con (fila, columna) del mejor movimiento
-        """
         difficulty_config = self.difficulty_levels[self.current_difficulty]
         
         # Medir tiempo de ejecución
@@ -476,98 +399,6 @@ class TresEnRayaPygame(MinimaxAlgorithm):
         self.reiniciar_juego()
         self.showing_difficulty_menu = True
     
-    def mostrar_analisis_matematico(self):
-        """Muestra el análisis matemático del algoritmo Minimax usando matplotlib."""
-        if not self.analysis_data['moves']:
-            print("No hay datos para mostrar")
-            return
-        
-        # Crear figura con subplots
-        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 12))
-        fig.suptitle('Análisis Matemático del Algoritmo Minimax', fontsize=16, fontweight='bold')
-        
-        # Gráfico 1: Nodos evaluados por movimiento
-        ax1.bar(self.analysis_data['moves'], self.analysis_data['nodes_evaluated'], 
-                color='skyblue', edgecolor='navy', alpha=0.7)
-        ax1.set_title('Nodos Evaluados por Movimiento')
-        ax1.set_xlabel('Número de Movimiento')
-        ax1.set_ylabel('Nodos Evaluados')
-        ax1.grid(True, alpha=0.3)
-        
-        # Agregar texto con estadísticas
-        total_nodes = sum(self.analysis_data['nodes_evaluated'])
-        avg_nodes = total_nodes / len(self.analysis_data['nodes_evaluated'])
-        ax1.text(0.02, 0.98, f'Total: {total_nodes}\nPromedio: {avg_nodes:.1f}', 
-                transform=ax1.transAxes, verticalalignment='top', 
-                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-        
-        # Gráfico 2: Tiempo de ejecución por movimiento
-        ax2.plot(self.analysis_data['moves'], 
-                [t * 1000 for t in self.analysis_data['time_taken']], 
-                marker='o', linewidth=2, markersize=6, color='red')
-        ax2.set_title('Tiempo de Ejecución por Movimiento')
-        ax2.set_xlabel('Número de Movimiento')
-        ax2.set_ylabel('Tiempo (ms)')
-        ax2.grid(True, alpha=0.3)
-        
-        # Agregar estadísticas de tiempo
-        total_time = sum(self.analysis_data['time_taken']) * 1000
-        avg_time = total_time / len(self.analysis_data['time_taken'])
-        ax2.text(0.02, 0.98, f'Total: {total_time:.1f}ms\nPromedio: {avg_time:.1f}ms', 
-                transform=ax2.transAxes, verticalalignment='top',
-                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-        
-        # Gráfico 3: Profundidad utilizada
-        ax3.scatter(self.analysis_data['moves'], self.analysis_data['depth_used'], 
-                   c=self.analysis_data['nodes_evaluated'], cmap='viridis', 
-                   s=100, alpha=0.7, edgecolors='black')
-        ax3.set_title('Profundidad vs Nodos Evaluados')
-        ax3.set_xlabel('Número de Movimiento')
-        ax3.set_ylabel('Profundidad Utilizada')
-        ax3.grid(True, alpha=0.3)
-        
-        # Agregar colorbar
-        cbar = plt.colorbar(ax3.collections[0], ax=ax3)
-        cbar.set_label('Nodos Evaluados')
-        
-        # Gráfico 4: Análisis de complejidad
-        moves_array = np.array(self.analysis_data['moves'])
-        nodes_array = np.array(self.analysis_data['nodes_evaluated'])
-        
-        ax4.semilogy(moves_array, nodes_array, 'bo-', label='Nodos Evaluados')
-        
-        # Agregar líneas de referencia de complejidad
-        if len(moves_array) > 1:
-            # Complejidad exponencial teórica
-            theoretical_exp = [3 ** (9 - i) for i in moves_array]
-            ax4.semilogy(moves_array, theoretical_exp, 'r--', alpha=0.5, label='O(3^n) Teórico')
-            
-            # Complejidad con poda alfa-beta
-            theoretical_pruned = [3 ** ((9 - i) * 0.5) for i in moves_array]
-            ax4.semilogy(moves_array, theoretical_pruned, 'g--', alpha=0.5, label='O(3^(n/2)) con poda')
-        
-        ax4.set_title('Complejidad Temporal del Algoritmo')
-        ax4.set_xlabel('Número de Movimiento')
-        ax4.set_ylabel('Nodos Evaluados (log scale)')
-        ax4.legend()
-        ax4.grid(True, alpha=0.3)
-        
-        # Agregar texto explicativo
-        explanation = (
-            "Análisis:\n"
-            "• El algoritmo Minimax explora el árbol de decisiones\n"
-            "• La poda alfa-beta reduce significativamente los nodos evaluados\n"
-            "• A medida que el juego progresa, hay menos movimientos posibles\n"
-            "• El tiempo de ejecución es proporcional a los nodos evaluados"
-        )
-        
-        plt.figtext(0.02, 0.02, explanation, fontsize=10, 
-                   bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
-        
-        plt.tight_layout()
-        plt.subplots_adjust(bottom=0.15)
-        plt.show()
-    
     def mostrar_costo_jugada(self, nodos_evaluados: int, tiempo_ms: float):
         """Muestra el costo de la jugada actual en la interfaz."""
         if nodos_evaluados > 0:
@@ -587,37 +418,8 @@ class TresEnRayaPygame(MinimaxAlgorithm):
             # Tiempo
             tiempo_texto = self.fuente.render(f"Tiempo: {tiempo_ms:.1f}ms", True, ROJO)
             self.pantalla.blit(tiempo_texto, (15, self.VENTANA_TAMAÑO + 60))
-    
-    def dibujar_boton_analisis(self):
-        """Dibuja el botón para mostrar el análisis matemático."""
-        if len(self.analysis_data['moves']) > 0:
-            # Posición del botón
-            button_width = 150
-            button_height = 40
-            button_x = self.VENTANA_TAMAÑO - button_width - 10
-            button_y = self.VENTANA_TAMAÑO + 50
-            
-            self.analysis_button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
-            
-            # Dibujar botón
-            pygame.draw.rect(self.pantalla, VIOLETA, self.analysis_button_rect)
-            pygame.draw.rect(self.pantalla, NEGRO, self.analysis_button_rect, 2)
-            
-            # Texto del botón
-            button_text = self.fuente.render("Ver Análisis", True, BLANCO)
-            text_rect = button_text.get_rect(center=self.analysis_button_rect.center)
-            self.pantalla.blit(button_text, text_rect)
-    
-    def verificar_click_analisis(self, pos_mouse: Tuple[int, int]) -> bool:
-        """Verifica si se hizo clic en el botón de análisis."""
-        if self.analysis_button_rect and self.analysis_button_rect.collidepoint(pos_mouse):
-            return True
-        return False
-    
+
     def ejecutar_juego(self):
-        """
-        Ejecuta el bucle principal del juego.
-        """
         ejecutando = True
         
         while ejecutando:
@@ -634,7 +436,6 @@ class TresEnRayaPygame(MinimaxAlgorithm):
                 
                 elif evento.type == pygame.MOUSEBUTTONDOWN:
                     if self.showing_difficulty_menu:
-                        # Manejo del menú de dificultad
                         difficulty_selected = self.obtener_click_dificultad(evento.pos)
                         if difficulty_selected:
                             self.current_difficulty = difficulty_selected
@@ -642,30 +443,18 @@ class TresEnRayaPygame(MinimaxAlgorithm):
                             self.reiniciar_juego()
                     
                     elif not self.game_over and not self.ai_thinking and self.current_player == self.human_player:
-                        # Verificar si se hizo clic en el botón de análisis
-                        if self.verificar_click_analisis(evento.pos):
-                            self.mostrar_analisis_matematico()
-                        else:
-                            # Manejo del juego
-                            pos_clic = self.obtener_posicion_clic(evento.pos)
-                            if pos_clic:
-                                fila, col = pos_clic
-                                if self.realizar_movimiento(fila, col, self.human_player):
-                                    self.winner = self.verificar_ganador(self.board)
-                                    if self.winner:
-                                        self.game_over = True
-                                    else:
-                                        self.current_player = self.ai_player
-                                        self.ai_thinking = True
-                    
-                    elif self.game_over:
-                        # Permitir ver análisis incluso cuando el juego terminó
-                        if self.verificar_click_analisis(evento.pos):
-                            self.mostrar_analisis_matematico()
+                        pos_clic = self.obtener_posicion_clic(evento.pos)
+                        if pos_clic:
+                            fila, col = pos_clic
+                            if self.realizar_movimiento(fila, col, self.human_player):
+                                self.winner = self.verificar_ganador(self.board)
+                                if self.winner:
+                                    self.game_over = True
+                                else:
+                                    self.current_player = self.ai_player
+                                    self.ai_thinking = True
             
-            # Turno de la IA
             if not self.showing_difficulty_menu and not self.game_over and self.current_player == self.ai_player and self.ai_thinking:
-                # Pequeña pausa para mostrar el mensaje de "pensando"
                 pygame.time.wait(500)
                 
                 fila, col = self.obtener_movimiento_ia()
@@ -694,7 +483,6 @@ class TresEnRayaPygame(MinimaxAlgorithm):
 
 
 def main():
-    """Función principal para ejecutar el juego."""
     juego = TresEnRayaPygame(use_alpha_beta=True)
     juego.ejecutar_juego()
 
