@@ -26,24 +26,18 @@ Juego de Tres en Raya (Tic-Tac-Toe) con inteligencia artificial basada en el alg
 
 ## 🎯 Uso
 
-### Ejecutar el juego
+### Ejecutar el juego con Pygame
 ```bash
 poetry run dev
 ```
 
 ### Comandos adicionales
 ```bash
-# Ejecutar análisis matemático
-poetry run python demo_analisis.py
-
 # Ejecutar versión de consola
-poetry run python src/tic_tac_toe_minimax_game/tres_en_raya.py
-
-# Ejecutar pruebas
-poetry run pytest
+poetry run console
 ```
 
-## 🎮 Cómo Jugar
+## 🎮 Cómo Jugar (Pygame)
 
 1. **Selecciona la dificultad**: Fácil, Normal, Difícil o Imposible
 2. **Haz tu movimiento**: Haz clic en una celda vacía del tablero
@@ -58,8 +52,7 @@ tic-tac-toe-minimax-game/
 │   └── tic_tac_toe_minimax_game/
 │       ├── minimax.py          # Algoritmo Minimax con poda alfa-beta
 │       ├── tres_en_raya.py     # Versión consola
-│       └── tres_en_raya_pygame.py  # Interfaz gráfica + análisis
-├── demo_analisis.py            # Demostración del análisis matemático
+│       └── tres_en_raya_pygame.py  # Interfaz gráfica
 ├── pyproject.toml
 └── README.md
 ```
