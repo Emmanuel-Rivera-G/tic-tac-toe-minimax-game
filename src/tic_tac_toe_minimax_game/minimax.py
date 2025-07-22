@@ -58,18 +58,6 @@ class MinimaxAlgorithm:
             "nodes_evaluated": self.nodes_evaluated,
             "alpha_beta_enabled": self.use_alpha_beta
         }
-    
-    def is_terminal_state(self, state):
-        raise NotImplementedError("Must implement is_terminal_state")
-    
-    def evaluate_state(self, state):
-        raise NotImplementedError("Must implement evaluate_state")
-    
-    def get_possible_moves(self, state):
-        raise NotImplementedError("Must implement get_possible_moves")
-    
-    def make_move(self, state, move):
-        raise NotImplementedError("Must implement make_move")
 
 class TicTacToe:
     def __init__(self):
